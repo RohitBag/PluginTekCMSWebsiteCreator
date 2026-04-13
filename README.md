@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 PluginTekCMS
+**The ultimate modular foundation for modern business websites.**
 
-## Getting Started
+PluginTekCMS is a robust, developer-centric content management system designed for speed, flexibility, and high-end aesthetics. Built on the latest **Next.js 15 (App Router)** and **Supabase**, it provides a "clean slate" template that can be transformed into any business platform—from real estate galleries and specialized consulting portals to creative portfolios.
 
-First, run the development server:
+### ✨ Key Features
+*   **🏗️ Dynamic Page Builder**: Drag-and-drop sectional layout management with support for custom HTML/CSS injections.
+*   **🔐 Seamless Auth**: Fully integrated authentication system powered by Supabase Auth, featuring user profiles and bookmarking.
+*   **🛠️ Pro Admin Dashboard**: Manage site globally—from Hero typography and branding filters to testimonials and multi-image project galleries.
+*   **🚀 Built for Performance**: Edge-ready with Next.js Server Components, Turbopack support, and optimized image handling.
+*   **🔍 SEO-First Architecture**: Automated dynamic `sitemap.xml` and `robots.txt` generation with full metadata control for every page.
+*   **🎨 Premium UI**: Modern, glassmorphic design system with full dark mode support and curated accessibility themes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 💻 Tech Stack
+*   **Framework**: [Next.js 15](https://nextjs.org/) (App Router, Server Actions)
+*   **Database & Auth**: [Supabase](https://supabase.com/)
+*   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+*   **Icons**: [Lucide React](https://lucide.dev/)
+*   **Type Safety**: [TypeScript](https://www.typescriptlang.org/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🏁 Quick Start
+1.  **Clone the Repo**:
+    ```bash
+    git clone https://github.com/RohitBag/PluginTekCMSWebsiteCreator.git
+    cd PluginTekCMSWebsiteCreator
+    ```
+2.  **Environment Setup**:
+    Rename `.env.example` to `.env.local` and add your required Supabase credentials (`URL`, `ANON_KEY`, `SERVICE_ROLE`).
+3.  **Database Initialization**:
+    - Run the provided **`supabase_schema.sql`** in your Supabase SQL Editor to set up the structure.
+    - (Optional) Run **`supabase_seed.sql`** to populate the database with generic demonstration content and auto-generated service pages.
+4.  **Run Locally**:
+    ```bash
+    npm install
+    npm run dev
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 📖 Documentation
+For more detailed instructions on deployment, backup management, and customization, please refer to the [Developer Setup Guide](./SETUP_GUIDE.md).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🏷️ Topics
+`nextjs-15` `supabase` `cms` `headless-cms` `website-builder` `typescript` `tailwindcss` `saas-template` `open-source`

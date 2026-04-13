@@ -14,10 +14,12 @@ This guide explains how to set up, deploy, and maintain the PluginTekCMS profess
 
 You need to create the necessary tables and security policies in your new Supabase project.
 
-1. Locate the file `supabase_schema.sql` in the root of the project (parent of `plugintek-cms-next`).
+1. Locate the file **`supabase_schema.sql`** in the root of the project.
 2. Copy the entire content of that file.
 3. Go to your **Supabase Dashboard** > **SQL Editor**.
 4. Paste the SQL content and click **Run**.
+
+This will create the entire database structure, RLS policies, and essential branding settings.
 
 This will create the following tables:
 
@@ -70,12 +72,20 @@ The application uses Supabase Authentication. You need to create an initial user
 
 ## 5. Seed the Database
 
-The codebase includes a built-in seeder tool to populate the database with initial content (found in `utils/seed_data.ts`).
+You have two options for seeding your database:
 
-1. **Navigate to the project directory**: `cd plugintek-cms-next`
+### Option A: Standard Seeding (via Admin UI)
+The application includes a built-in seeder tool to populate the database with professional, generic content (found in `utils/seed_data.ts`).
+1. **Navigate to the project directory**: `cd PluginTekCMSWebsiteCreator`
 2. **Start the server**: `npm run dev`
-3. **Login**: Go to `http://localhost:3000/login` and use the admin credentials.
+3. **Login**: Go to `http://localhost:3000/login` and use your admin credentials.
 4. **Seed Database**: Navigate to `http://localhost:3000/admin/seed` and click **Start Seeding**.
+
+### Option B: Advanced Seeding (via SQL)
+If you want to auto-generate dynamic pages for all your services with one click:
+1. Locate **`supabase_seed.sql`** in the project root.
+2. Copy and run it in your **Supabase SQL Editor**.
+3. This creates generic professional content pages mapped to your service IDs.
 
 ## 6. Verify
 
