@@ -310,7 +310,7 @@ values
       "fontFamily": "Outfit"
     },
     "moreLabel": "More"
-  }'::jsonb, "Header Menu Configuration", "json"),
+  }'::jsonb, 'Header Menu Configuration', 'json'),
   ('favicon_type', '"image"', 'Favicon Type', 'text'),
   ('favicon_url', '""', 'Favicon Image URL', 'text'),
   ('favicon_icon', '"fa-solid fa-star"', 'Favicon FontAwesome Icon', 'text'),

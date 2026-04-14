@@ -3,14 +3,57 @@
 This guide explains how to set up, deploy, and maintain the PluginTekCMS professional business platform.
 
 > [!IMPORTANT]
-> All commands (`npm run dev`, `npm run build`, etc.) MUST be executed from the `plugintek-cms-next` directory.
+> All commands (`npm run dev`, `npm run build`, etc.) MUST be executed from the **project root directory**.
 
-## 1. Local Setup
+## 1. Initial Supabase Setup
 
-1. **Environment Variables**: Ensure you have a `.env.local` file in the `plugintek-cms-next` directory with your Supabase credentials.
-2. **Database Schema**: Follow the steps below.
+Before configuring the code, you must set up your database and authentication backend:
 
-## 2. Initialize Database Schema
+1.  **Create Account**: Sign up at [Supabase.com](https://supabase.com/).
+2.  **New Project**: Click **New Project** and select your organization.
+3.  **Project Details**:
+    *   **Name**: Enter a name (e.g., `PluginTek CMS`).
+    *   **Database Password**: Create a secure password and **save it somewhere safe**.
+    *   **Region**: Select the region closest to your users.
+    *   **Plan**: Select the **Free** tier (unless you need more resources).
+4.  **Wait for Initialization**: It can take a few minutes for the database to be provisioned.
+
+## 2. Environment Configuration
+
+Once your project is ready, you need to connect your local code to your Supabase instance.
+
+1.  **Locate API Keys**:
+    *   In the Supabase Dashboard, go to **Project Settings** (lower-left gear icon).
+    *   **Project URL**: Go to **Integrations** > **Data API**. Copy the **API URL** (e.g., `https://your-id.supabase.co`).
+    *   **API Keys**: Go to **Configuration** > **API Keys**.
+    *   **Anon & Service Role Keys**: Click the **"Legacy anon, service_role API keys"** tab.
+        *   Copy the **`anon` `public`** key for `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+        *   Click **Reveal** and copy the **`service_role` `secret`** key for `SUPABASE_SERVICE_ROLE_KEY`.
+
+2.  **Create `.env.local`**:
+    *   In the project root, duplicate the `.env.example` file and rename it to **`.env.local`**.
+    *   Open `.env.local` and paste your credentials:
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-secret-key
+
+# Application Base URL
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+# Security Key for Section Injection API
+# Generate a random 32+ character string for security
+SECTION_INJECTION_KEY=your-random-secure-key
+```
+
+## 3. Local Setup
+
+1. **Install Dependencies**: Run `npm install` in the project root.
+2. **Database Schema**: Follow the steps below to initialize your tables.
+
+## 4. Initialize Database Schema
 
 You need to create the necessary tables and security policies in your new Supabase project.
 
@@ -31,7 +74,7 @@ This will create the following tables:
 
 It also enables Row Level Security (RLS) policies.
 
-## 3. Configure Storage Buckets
+## 5. Configure Storage Buckets
 
 The application requires a public storage bucket to host site logos, project thumbnails, and other assets.
 
@@ -61,7 +104,7 @@ create policy "Admin Delete" on storage.objects for delete
 using ( bucket_id = 'images' AND auth.role() = 'authenticated' );
 ```
 
-## 4. Create an Admin User
+## 6. Create an Admin User
 
 The application uses Supabase Authentication. You need to create an initial user to access the admin panel.
 
@@ -69,8 +112,23 @@ The application uses Supabase Authentication. You need to create an initial user
 2. Click **Add User**.
 3. Enter an email address (e.g., `admin@plugintek-cms.com`) and a secure password.
 4. Ensure the user is "Confirmed" (manual addition usually does this).
+5. **Promote to Admin**: By default, new users are assigned the `user` role. To access the admin panel, you must manually promote your account.
+    *   Go to **Supabase Dashboard** > **SQL Editor**.
+    *   Run the following query (replace with your user's email or ID):
 
-## 5. Seed the Database
+```sql
+-- Promote a user to admin by email
+UPDATE public.profiles 
+SET role = 'admin' 
+WHERE email = 'admin@plugintek-cms.com';
+
+-- OR Promote by specific ID (found in Auth > Users)
+UPDATE public.profiles 
+SET role = 'admin' 
+WHERE id = 'your-user-uuid-here';
+```
+
+## 7. Seed the Database
 
 You have two options for seeding your database:
 
@@ -87,13 +145,22 @@ If you want to auto-generate dynamic pages for all your services with one click:
 2. Copy and run it in your **Supabase SQL Editor**.
 3. This creates generic professional content pages mapped to your service IDs.
 
-## 6. Verify
+### Option C: AI-Powered Seeding (Custom Implementation)
+
+If you are using an AI coding assistant (like **Google Antigravity**, **Cursor**, **Claude**, or **Copilot**), you can use the specialized `generate_client_site` skill to build a fully tailored site from a client brief.
+
+1. Create a markdown file (e.g., `client_brief.md`) with the client's requirements, brand colors, and desired services.
+2. Use your AI assistant to invoke the skill: *"Use the `generate_client_site` skill to generate a website based on @client_brief.md"*
+3. The AI will generate a `.zip` file containing SEO-optimized JSON data and AI-generated images.
+4. **Login** to your admin dashboard, navigate to **Backups**, and upload the generated `.zip` file using the **Import Backup** tool.
+
+## 8. Verify
 
 * Wait for the "Seeding Complete!" message.
 * Go back to the Admin Dashboard (`/admin/projects` or `/admin/settings`) to see the populated data.
 * Your site should now display the initial content.
 
-## 7. Note on Seed Data
+## 9. Note on Seed Data
 
 The actual seed data is located in `utils/seed_data.ts`.
 
@@ -101,7 +168,7 @@ The actual seed data is located in `utils/seed_data.ts`.
 
 ---
 
-## 8. Custom HTML Sections
+## 10. Custom HTML Sections
 
 You can inject fully custom HTML and CSS into any section on the homepage.
 
@@ -224,7 +291,7 @@ For a high-conversion, animated booking section, use this recommended template:
 
 ---
 
-## 9. Content Injection API
+## 11. Content Injection API
 
 A secure API endpoint allows you to **programmatically update** any custom section. The API also triggers an automatic **Next.js ISR cache revalidation**, so your changes appear instantly.
 
@@ -287,7 +354,7 @@ curl -X POST http://localhost:3000/api/sections/inject \
 
 ---
 
-## 10. Build & Deployment
+## 12. Build & Deployment
 
 To prepare the application for production with SSG and ISR:
 
@@ -305,7 +372,7 @@ The client-facing pages (Home and Listings) are statically generated to ensure m
 > [!TIP]
 > To change the revalidation period for production, search for `export const revalidate` in the codebase.
 
-## 11. Deployment to Vercel
+## 13. Deployment to Vercel
 
 To deploy your site to the cloud, follow these steps:
 
@@ -339,7 +406,7 @@ After your site is live on Vercel:
 
 ---
 
-## 12. Managing Section Content
+## 14. Managing Section Content
 
 To keep the administration panel organized, content for specific sections (Hero, About, Services, etc.) is managed via the **Layout Editor**.
 
@@ -362,7 +429,7 @@ To keep the administration panel organized, content for specific sections (Hero,
 
 Global branding (Site Name, Colors, Logos) and Navigation labels remain in the main **Settings** page.
 
-### 13. Reordering Header Menu Items
+### 15. Reordering Header Menu Items
 
 You can customize the order of items in the top navigation bar independently of the home page section order.
 
@@ -373,7 +440,7 @@ You can customize the order of items in the top navigation bar independently of 
 5. Click **Save Changes** at the top or bottom of the page to apply the new order.
 6. The public site header will immediately reflect this custom order.
 
-### 14. Configuring Text Logo
+### 16. Configuring Text Logo
 
 You can now choose between an image logo or a text-based logo.
 
@@ -387,7 +454,7 @@ You can now choose between an image logo or a text-based logo.
     *   **Colors & Shadows**: Set independent colors and drop shadows for both **Light** and **Dark** modes to ensure perfect visibility.
 5. Click **Save Changes** to apply.
 
-### 15. Configuring Favicon (Site Icon)
+### 17. Configuring Favicon (Site Icon)
 
 You can choose between an uploaded image or a FontAwesome icon for your site's favicon.
 
